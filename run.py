@@ -19,7 +19,8 @@ SHEET = GSPREAD_CLIENT.open('love_sandwiches_cli_project')
 
 def get_sales_data():
     """
-    Get sales data from user input through the terminal
+    Get sales data from user input through the terminal which must be a string of 6 numbers seperated with commas.
+    While loop will be True if valid data are entered or will return False and loop will continue and request data from the user until valid inputs are provided.
     """
     while True:
         print("Please enter the sales data from the last market day.")
@@ -32,7 +33,7 @@ def get_sales_data():
         sales_data = data_str.split(",")
 
         if validate_data(sales_data):
-            print("validation was True")
+            print("Sales data logged")
             break
     
     return sales_data
@@ -56,5 +57,15 @@ def validate_data(values):
 
     return True
 
+def update_sales_data(data):
+    """
+    Update sales worksheet, adds the new row of data entered by the user.
+    """
+    print("Updating sales worksheet...\n")
+    sales_worksheet = SHEET.worksheet("sales")
+    sales_worksheet.append_row(data)
+    print("Sales worksheet updated successfully!.\n")
 
 data = get_sales_data()
+sales_data = [int(num) for num in data]
+update_sales_data(sales_data)
