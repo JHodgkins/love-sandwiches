@@ -32,7 +32,7 @@ def get_sales_data():
     validate_data(sales_data)
 
 
-def validate_data(value):
+def validate_data(values):
     """
     Validate data entered by the user
     try converts all string values to int
@@ -40,11 +40,12 @@ def validate_data(value):
     data entered is not 6 numbers.
     """
     try:
-        if len(value) != 6:
-            raise ValueError(f"6 numbers are required, you entered {len(value)}")
-        # elif value != int:
-        #     raise ValueError(f"Numbers are only allowed to be entered, you entered {value}")
+        [int(value) for value in values]
+        if len(values) != 6:
+            raise ValueError(
+                f"Exactly 6 values are required, you provided {len(values)}"
+            )
     except ValueError as e:
-        print(f"Error: {e}, \nPlease re-enter the sales data\n")
+        print(f"Error: {e}, please try to re-enter your sales data again.\n")
 
 get_sales_data()
