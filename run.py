@@ -1,6 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
-# from pprint import pprint
+from pprint import pprint
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -80,6 +80,18 @@ def calculate_surplus_stock(sales_row):
         surplus_data.append(surplus)
     return surplus_data
 
+def get_last_five_entries_sales():
+    """
+    Retrieve the last 5 rows of sales data for each item and calculate 
+    the average number of sandwiches needed for each market
+    """
+    sales = SHEET.worksheet("sales")
+    columns = []
+    for ind in range(1, 7):
+        column = sales.col_values(ind)
+        columns.append(column[-5:])
+    return columns
+
 
 def main():
     """
@@ -93,4 +105,5 @@ def main():
 
 
 print("Welcome to Love Sandwiches - Data managment tool \n")
-main()
+# main()
+sales_columns = get_last_five_entries_sales()
