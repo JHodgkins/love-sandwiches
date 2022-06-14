@@ -1,6 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
-from pprint import pprint
+#from pprint import pprint
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -80,9 +80,10 @@ def calculate_surplus_stock(sales_row):
         surplus_data.append(surplus)
     return surplus_data
 
+
 def get_last_five_entries_sales():
     """
-    Retrieve the last 5 rows of sales data for each item and calculate 
+    Retrieve the last 5 rows of sales data for each item and calculate
     the average number of sandwiches needed for each market
     """
     sales = SHEET.worksheet("sales")
@@ -95,7 +96,7 @@ def get_last_five_entries_sales():
 
 def calculate_stock_data(data):
     """.git/
-    Calculate the average stock for each item type, 
+    Calculate the average stock for each item type,
     adding an additional 10%
     """
     print("Calculating stock data")
@@ -106,6 +107,20 @@ def calculate_stock_data(data):
         stock_num = average * 1.1
         new_stock_data.append(round(stock_num))
     return new_stock_data
+
+
+def get_stock_values(data):
+    """
+    get stock headings and data for recommended amount of items to create
+    """
+    headings = SHEET.worksheet("stock").get_all_values()[0]
+    print("Make the following numbers of sandwiches for next market:")
+    new_data = {}
+    for heading, stock_num in zip(headings, data):
+        new_data[heading] = stock_num
+    print(new_data, "\n")
+    return new_data
+
 
 def main():
     """
@@ -119,6 +134,8 @@ def main():
     sales_columns = get_last_five_entries_sales()
     stock_data = calculate_stock_data(sales_columns)
     update_worksheet(stock_data, "stock")
+    get_stock_values(stock_data)
+
 
 print("Welcome to Love Sandwiches - Data managment tool \n")
 main()
